@@ -1,0 +1,39 @@
+version: "1"
+
+package:
+  id: io.github.OpenRCT2Launcher
+  name: OpenRCT2Launcher
+  version: 0.0.7.1
+  kind: app
+  description: |
+    An Open Source Launcher & Updater for OpenRCT2
+
+command:
+  - /opt/apps/io.github.OpenRCT2Launcher/files/bin/OpenRCT2Launcher
+
+base: org.deepin.foundation/23.0.0
+runtime: org.deepin.Runtime/23.0.1
+
+sources:
+  - kind: git
+    url: https://github.com/LRFLEW/OpenRCT2Launcher.git
+    version: master
+    commit: 72c07834599b798b36005e3de0f3a348cd656616
+  - kind: git
+    url: https://github.com/madler/zlib.git
+    version: master
+    commit: 545f1949635949159fa6282e81712aec32b5d4f1
+build: |
+  cd /project/linglong/sources/zlib.git
+  mkdir build
+  cd build
+  cmake .. \
+        -DCMAKE_INSTALL_PREFIX=${PREFIX}
+  cmake --build . --target install
+  cd /project/linglong/sources/OpenRCT2Launcher.git
+  git apply ../../../0001-install.patch
+  mkdir build
+  cd build
+  cmake .. \
+        -DCMAKE_INSTALL_PREFIX=${PREFIX}
+  cmake --build . --target install

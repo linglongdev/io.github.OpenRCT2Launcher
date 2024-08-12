@@ -1,0 +1,67 @@
+From cc26a9f7f3b6bae5cbd6e67c38c297c3acc2389e Mon Sep 17 00:00:00 2001
+From: wjyrich <1071633242@qq.com>
+Date: Sun, 11 Aug 2024 15:01:17 +0800
+Subject: [PATCH] install
+
+---
+ CMakeLists.txt                     | 19 ++++++++++++-------
+ resources/OpenRCT2Launcher.desktop | 11 +++++++++++
+ 2 files changed, 23 insertions(+), 7 deletions(-)
+ create mode 100644 resources/OpenRCT2Launcher.desktop
+
+diff --git a/CMakeLists.txt b/CMakeLists.txt
+index d76aa21..5566849 100644
+--- a/CMakeLists.txt
++++ b/CMakeLists.txt
+@@ -12,13 +12,9 @@ set(CMAKE_CXX_STANDARD 11)
+ set(CMAKE_CXX_STANDARD_REQUIRED ON)
+ 
+ find_package(Qt5 COMPONENTS Core Gui Widgets Network REQUIRED)
+-find_package(Qt5 OPTIONAL_COMPONENTS Zlib)
+-if (Qt5Zlib_FOUND)
+-        set(ZLIB_LINK Qt5::Zlib)
+-else()
+-        find_package(ZLIB REQUIRED)
+-        set(ZLIB_LINK ZLIB::ZLIB)
+-endif()
++find_package(ZLIB REQUIRED)
++set(ZLIB_LINK ZLIB::ZLIB)
++
+ 
+ set(PROJECT_SOURCES
+     ${CMAKE_CURRENT_SOURCE_DIR}/resources/resources.qrc
+@@ -69,3 +65,12 @@ add_executable(OpenRCT2Launcher WIN32 MACOSX_BUNDLE ${PROJECT_SOURCES})
+ target_compile_definitions(OpenRCT2Launcher PUBLIC APP_VERSION="${PROJECT_VERSION}")
+ 
+ target_link_libraries(OpenRCT2Launcher PRIVATE Qt5::Core Qt5::Gui Qt5::Widgets Qt5::Network ${ZLIB_LINK})
++
++install(TARGETS OpenRCT2Launcher
++             DESTINATION bin)
++install(FILES resources/splash.png
++        DESTINATION share/icons)
++
++
++install(FILES resources/OpenRCT2Launcher.desktop
++            DESTINATION share/applications)
+\ No newline at end of file
+diff --git a/resources/OpenRCT2Launcher.desktop b/resources/OpenRCT2Launcher.desktop
+new file mode 100644
+index 0000000..5c8d620
+--- /dev/null
++++ b/resources/OpenRCT2Launcher.desktop
+@@ -0,0 +1,11 @@
++[Desktop Entry]
++Categories=Game;Qt;Utility;
++Exec=OpenRCT2Launcher
++Name=OpenRCT2Launcher
++Name[zh_CN]=OpenRCT2Launcher
++Icon=splash
++StartupNotify=false
++Terminal=false
++Type=Application
++GenericName=OpenRCT2Launcher
++Version=0.0.7
+\ No newline at end of file
+-- 
+2.43.4
+
